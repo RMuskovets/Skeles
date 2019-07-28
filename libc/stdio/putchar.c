@@ -1,7 +1,12 @@
 #include <stdio.h>
 
 #if defined(__is_libk)
-#include <kernel/tty.h>
+// #ifndef GRAPHICS
+// #include <kernel/tty.h> // text mode; just text
+// #else
+// #include <kernel/video-tty.h> // graphics mode; draw the text
+// #endif
+#include <kernel/video-tty.h>
 #endif
 
 int putchar(int ic) {
