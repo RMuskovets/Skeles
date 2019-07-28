@@ -1,16 +1,12 @@
-#define GRAPHICS // the graphics mode is enabled.
+#define GRAPHICS
 
 #include <stdio.h>
 
-// #ifndef GRAPHICS
-// #include <kernel/tty.h>
-// #else
-// #include <kernel/video-tty.h>
-// #endif
-
+#include <kernel/vesa.h>
 #include <kernel/video-tty.h>
 
-void kernel_main(void) {
+void kernel_main(uint32_t *multiboot) {
+	set_framebuffer(multiboot);
 	terminal_initialize();
-	printf("Hello, kernel World!\n");
+	puts("Hi!");
 }

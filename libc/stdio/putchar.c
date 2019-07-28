@@ -1,11 +1,6 @@
 #include <stdio.h>
 
 #if defined(__is_libk)
-// #ifndef GRAPHICS
-// #include <kernel/tty.h> // text mode; just text
-// #else
-// #include <kernel/video-tty.h> // graphics mode; draw the text
-// #endif
 #include <kernel/video-tty.h>
 #endif
 
