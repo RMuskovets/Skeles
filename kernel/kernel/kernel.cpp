@@ -9,31 +9,24 @@
 
 #define SHELL_PROMPT "root@kernel$ "
 
-extern "C" void kernel_main(uint32_t *multiboot) {
-	uint32_t* memupper = (uint32_t*)(((size_t)multiboot) + 8);
+void setup_terminal(uint32_t *multiboot)
+{
 	set_framebuffer(multiboot);
-	terminal_initialize(VGA_COLOR_GREEN);
-	new_mem_mgr(*memupper, 64*1048576);
-	// puts(" ________  ___  __    _______   ___       _______   ________  ________  ________      ");
-	// puts("|\\   ____\\|\\  \\|\\  \\ |\\  ___ \\ |\\  \\     |\\  ___ \\ |\\   ____\\|\\   __  \\|\\   ____\\     ");
-	// puts("\\ \\  \\___ \\ \\  \\/  /|\\ \\   __/|\\ \\  \\    \\ \\   __/|\\ \\  \\___|\\ \\  \\|\\  \\ \\  \\___|_    ");
-	// puts(" \\ \\_____  \\ \\   ___  \\ \\  \\_|/_\\ \\  \\    \\ \\  \\_|/_\\ \\_____  \\ \\  \\\\\\  \\ \\_____  \\   ");
-	// puts("  \\|____|\\  \\ \\  \\\\ \\  \\ \\  \\_|\\ \\ \\  \\____\\ \\  \\_|\\ \\|____|\\  \\ \\  \\\\\\  \\|____|\\  \\  ");
-	// puts("    ____\\_\\  \\ \\__\\\\ \\__\\ \\_______\\ \\_______\\ \\_______\\____\\_\\  \\ \\_______\\____\\_\\  \\ ");
-	// puts("   |\\_________\\|__| \\|__|\\|_______|\\|_______|\\|_______|\\_________\\|_______|\\_________\\");
-	// puts("   \\|_________|                                       \\|_________|        \\|_________|");
-	// terminal_initialize(VGA_COLOR_LIGHT_GREY);
-	// puts("");
-	// puts(SHELL_PROMPT);
-
-	char s[2] = {0, 0};
-
-	for (unsigned char c = 0; c < 256; c++)
-	{
-		s[0] = c;
-		printf(s);
-		if (c % 16 == 0)
-			puts("\n");
-	}
+	terminal_initialize();
 }
 
+
+void setup_memmgr(uint32_t *multiboot)
+{
+	uint32_t* memupper = (uint32_t*)multiboot[2];
+	new_mem_mgr(*memupper, 64*1048576);
+}
+
+extern "C" void kernel_main(uint32_t *multiboot) {
+	setup_terminal(multiboot);
+	setup_memmgr(multiboot);
+
+	printf("hello, world\n");
+
+	terminal_free();
+}

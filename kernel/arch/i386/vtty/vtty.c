@@ -20,6 +20,8 @@ uint32_t max_col, max_row;
 
 uint32_t vga_color;
 
+void print_ch(char);
+
 void vtc_paint_callback(vtconsole_t *vtc, vtcell_t *cell, int x, int y)
 {
 	terminal_setcolor(cell->attr.fg);
@@ -61,12 +63,19 @@ void print_ch(char c)
 	}
 }
 
-void terminal_initialize(uint8_t vc)
+void terminal_initialize()
 {
 	max_col = (start_x * 2 - get_width()) / GLYPH_WIDTH;
 	max_row = (start_y * 2 - get_height())/ GLYPH_HEIGHT;
-	vga_color = vga_to_color(vc);
 	vtc = vtconsole(max_col, max_row, vtc_paint_callback, vtc_move_callback);
+}
+
+void terminal_free()
+{
+	vtconsole_delete(vtc);
+	vga_color = 0;
+	max_col = 0;
+	max_row = 0;
 }
 
 void terminal_putchar(char c)
@@ -76,14 +85,14 @@ void terminal_putchar(char c)
 
 void terminal_write(const char* data, size_t size)
 {
-	for (int i = 0; i < size; ++i)
-	{
-		terminal_putchar(data[i]);
-	}
+	// for (int i = 0; i < size; ++i)
+	// {
+	// 	terminal_putchar(data[i]);
+	// }
+	vtconsole_write(vtc, data, size);
 }
 
 void terminal_writestring(const char* data)
 {
-	for (int i = 0; data[i]; ++i)
-		terminal_putchar(data[i]);
+	vtconsole_write(vtc, data, strlen(data));
 }
