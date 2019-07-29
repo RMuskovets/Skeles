@@ -6,6 +6,11 @@
 .set MAGIC,    0x1BADB002       # 'magic number' lets bootloader find the header
 .set CHECKSUM, -(MAGIC + FLAGS) # checksum of above, to prove we are multiboot
 
+.set WIDTH, 1024
+.set HEIGHT, 768
+.set BPP,     32
+.set TEXT,     0
+
 # Declare a header as in the Multiboot Standard.
 .section .multiboot
 .align 4
@@ -17,10 +22,10 @@
 .long 0
 .long 0
 .long 0
-.long 0
-.long 1024
-.long 768
-.long 32
+.long TEXT
+.long WIDTH
+.long HEIGHT
+.long BPP
 
 # Reserve a stack for the initial thread.
 .section .bss
@@ -39,7 +44,7 @@ _start:
 	# Call the global constructors.
 	call _init
 
-	# Provide the Multiboot structure to the main kernel.
+	# Provide the Multiboot structure into the main kernel.
 	push %ebx
 
 	# Transfer control to the main kernel.
