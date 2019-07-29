@@ -26,7 +26,7 @@ extern "C" void kernel_main(uint32_t *multiboot) {
 	setup_terminal(multiboot);
 	setup_memmgr(multiboot);
 
-	printf("hello, world\n");
+	puts("hello, world");
 
 	terminal_free();
 }

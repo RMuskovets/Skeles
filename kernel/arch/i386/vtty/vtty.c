@@ -8,7 +8,11 @@
 #include <kernel/font.h>
 #include <kernel/vga.h>
 
+#define __USE_VTC
+
+#ifdef __USE_VTC
 #include <3rdparty/vtc.h>
+#endif
 
 const uint32_t start_x = 10;
 const uint32_t start_y = 10;
@@ -22,9 +26,10 @@ uint32_t vga_color;
 
 void print_ch(char);
 
+#ifdef __USE_VTC
 void vtc_paint_callback(vtconsole_t *vtc, vtcell_t *cell, int x, int y)
 {
-	terminal_setcolor(cell->attr.fg);
+	terminal_setcolor(vga_to_color(cell->attr.fg));
 	terminal_goto((uint32_t) x, (uint32_t) y);
 	print_ch(cell->c);
 }
@@ -35,6 +40,7 @@ void vtc_move_callback(vtconsole_t *vtc, vtcursor_t *cur)
 }
 
 vtconsole_t *vtc;
+#endif
 
 void terminal_setcolor(uint8_t vc)
 {
@@ -67,12 +73,17 @@ void terminal_initialize()
 {
 	max_col = (start_x * 2 - get_width()) / GLYPH_WIDTH;
 	max_row = (start_y * 2 - get_height())/ GLYPH_HEIGHT;
+#ifdef __USE_VTC
 	vtc = vtconsole(max_col, max_row, vtc_paint_callback, vtc_move_callback);
+#endif
+	vga_color = vga_to_color(VGA_COLOR_CYAN);
 }
 
 void terminal_free()
 {
+#ifdef __USE_VTC
 	vtconsole_delete(vtc);
+#endif
 	vga_color = 0;
 	max_col = 0;
 	max_row = 0;
@@ -80,19 +91,45 @@ void terminal_free()
 
 void terminal_putchar(char c)
 {
+#ifdef __USE_VTC
 	vtconsole_putchar(vtc, c);
+#else
+	if (c == '\n')
+	{
+		row++;
+		col=0;
+	} else if (c == '\r')
+	{
+		col=0;
+	} else if (c == '\b')
+	{
+		col-=2;
+		print_ch(' ');
+	} else
+	{
+		if (++col == max_col) {
+			col=0;
+			row++;
+		}
+		print_ch(c);
+	}
+#endif
 }
 
 void terminal_write(const char* data, size_t size)
 {
-	// for (int i = 0; i < size; ++i)
-	// {
-	// 	terminal_putchar(data[i]);
-	// }
+#ifdef __USE_VTC
 	vtconsole_write(vtc, data, size);
+#else
+	for (int i = 0; i < size; ++i)
+	{
+		terminal_putchar(data[i]);
+	}
+#endif
 }
 
 void terminal_writestring(const char* data)
 {
-	vtconsole_write(vtc, data, strlen(data));
+	// vtconsole_write(vtc, data, strlen(data));
+	terminal_write(data, strlen(data));
 }
