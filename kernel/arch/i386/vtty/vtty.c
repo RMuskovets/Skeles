@@ -8,6 +8,7 @@
 #include <kernel/font.h>
 #include <kernel/vga.h>
 
+#include <3rdparty/vtc.h>
 
 const uint32_t start_x = 10;
 const uint32_t start_y = 10;
@@ -18,6 +19,31 @@ uint32_t row = 0;
 uint32_t max_col, max_row;
 
 uint32_t vga_color;
+
+void vtc_paint_callback(vtconsole_t *vtc, vtcell_t *cell, int x, int y)
+{
+	terminal_setcolor(cell->attr.fg);
+	terminal_goto((uint32_t) x, (uint32_t) y);
+	print_ch(cell->c);
+}
+
+void vtc_move_callback(vtconsole_t *vtc, vtcursor_t *cur)
+{
+	terminal_goto((uint32_t) cur->x, (uint32_t) cur->y);
+}
+
+vtconsole_t *vtc;
+
+void terminal_setcolor(uint8_t vc)
+{
+	vga_color = vga_to_color(vc);
+}
+
+void terminal_goto(uint32_t c, uint32_t r)
+{
+	col = c;
+	row = r;
+}
 
 void print_ch(char c)
 {
@@ -40,26 +66,12 @@ void terminal_initialize(uint8_t vc)
 	max_col = (start_x * 2 - get_width()) / GLYPH_WIDTH;
 	max_row = (start_y * 2 - get_height())/ GLYPH_HEIGHT;
 	vga_color = vga_to_color(vc);
+	vtc = vtconsole(max_col, max_row, vtc_paint_callback, vtc_move_callback);
 }
 
 void terminal_putchar(char c)
 {
-	if (c == '\n')
-	{
-		col = 0;
-		if (++row == max_row) {
-			row = 0;
-		}
-	} else
-	{
-		print_ch(c);
-		if (++col == max_col) {
-			col = 0;
-			if (++row == max_row) {
-				row = 0;
-			}
-		}
-	}
+	vtconsole_putchar(vtc, c);
 }
 
 void terminal_write(const char* data, size_t size)

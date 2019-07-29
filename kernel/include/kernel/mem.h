@@ -25,8 +25,8 @@ typedef struct mem_mgr
 struct mem_mgr *new_mem_mgr(size_t start, size_t sz);
 
 struct mem_mgr *get_active_mem_mgr();
-void *alloc(size_t);
-void free(void*);
+void *kalloc(size_t);
+void kfree(void*);
 
 #ifdef __cplusplus
 }

@@ -23,7 +23,7 @@ struct mem_mgr *get_active_mem_mgr()
 	return active;
 }
 
-void* alloc(size_t sz)
+void* kalloc(size_t sz)
 {
 	mem_chunk_t *res = 0;
 	for (mem_chunk_t *c = active->first; c != 0 && res == 0; c = c->next)
@@ -50,7 +50,7 @@ void* alloc(size_t sz)
 	return (void*)(((size_t)res) + sizeof(mem_chunk_t));
 }
 
-void free(void *ptr)
+void kfree(void *ptr)
 {
 	mem_chunk_t* chunk = (mem_chunk_t*)((size_t)ptr - sizeof(mem_chunk_t));
 	
@@ -79,23 +79,23 @@ void* operator new(size_t size)
 {
     if(get_active_mem_mgr() == 0)
         return 0;
-    return alloc(size);
+    return kalloc(size);
 }
 
 void* operator new[](size_t size)
 {
     if(get_active_mem_mgr() == 0)
         return 0;
-    return alloc(size);
+    return kalloc(size);
 }
 void operator delete(void* ptr)
 {
     if(get_active_mem_mgr() != 0)
-        free(ptr);
+        kfree(ptr);
 }
 
 void operator delete[](void* ptr)
 {
     if(get_active_mem_mgr() != 0)
-        free(ptr);
+        kfree(ptr);
 }
