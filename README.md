@@ -2,7 +2,7 @@
 Skeles is a hobby OS with VESA/VBE support and GRUB booting.
 
 # Screenshots
-None yet.
+![Screenshot of 1.0](screenshots/v1.0.png)
 
 # I see that's not entirely your code!
 Yes, that's true. I've started from the OSdev "Meaty Skeleton".
