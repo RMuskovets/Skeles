@@ -3,6 +3,7 @@ Skeles is a hobby OS with VESA/VBE support and GRUB booting.
 
 # Screenshots
 ![Screenshot of 1.0](screenshots/v1.0.png)
+![Screenshot with new prompt](screenshots/v1.1.png)
 
 # License
 The license is GNU GPL 3.0, which means you can use the code in any purposes as long as you provide access to original sources.

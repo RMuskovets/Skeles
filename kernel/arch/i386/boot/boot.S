@@ -6,7 +6,7 @@
 .set MAGIC,    0x1BADB002       # 'magic number' lets bootloader find the header
 .set CHECKSUM, -(MAGIC + FLAGS) # checksum of above, to prove we are multiboot
 
-.set WIDTH, 1024
+.set WIDTH,  1024
 .set HEIGHT, 768
 .set BPP,     32
 .set TEXT,     0
