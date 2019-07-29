@@ -7,7 +7,7 @@
 #include <kernel/video-tty.h>
 #include <kernel/font.h>
 
-#include "../vga.h"
+#include "../inc/vga.h"
 
 const uint32_t start_x = 10;
 const uint32_t start_y = 10;
@@ -23,10 +23,11 @@ void print_ch(char c)
 	int y = (start_y+row*GLYPH_HEIGHT);
 	uint32_t color = vga_to_color(VGA_COLOR_MAGENTA);
 	int lx; int ly;
-	for (lx = 0; lx < 8; lx++) {
-		for (ly = 0; ly < 8; ly++) {
-			uint8_t row = FONT[GLYPH_OFFSET(c) + ly];
-			if (row >> lx & 1)
+	uint8_t *bitmap = font8x8_basic[c % 128];
+	for (lx = 0; lx < GLYPH_WIDTH; lx++) {
+		for (ly = 0; ly < GLYPH_HEIGHT; ly++) {
+			uint8_t row = bitmap[ly];
+			if ((row >> lx) & 1)
 				putpixeli(x+lx, y+ly, color);
 		}
 	}

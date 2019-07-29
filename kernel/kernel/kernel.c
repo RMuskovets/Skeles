@@ -8,5 +8,5 @@
 void kernel_main(uint32_t *multiboot) {
 	set_framebuffer(multiboot);
 	terminal_initialize();
-	puts("Hi!");
+	puts("root@kernel$ ");
 }
