@@ -5,7 +5,7 @@ struct mem_mgr* active = 0;
 struct mem_mgr *new_mem_mgr(size_t start, size_t sz)
 {
 	mem_chunk_t *first = (sz < sizeof(mem_chunk_t) ? 0 : (mem_chunk_t*) start);
-	mem_mgr_t this = {
+	mem_mgr_t self = {
 		.first = first
 	};
 
@@ -14,8 +14,8 @@ struct mem_mgr *new_mem_mgr(size_t start, size_t sz)
 	first->next = 0;
 	first->size = sz - sizeof(mem_chunk_t);
 
-	active = &this;
-	return &this;
+	active = &self;
+	return active;
 }
 
 struct mem_mgr *get_active_mem_mgr()
@@ -23,7 +23,7 @@ struct mem_mgr *get_active_mem_mgr()
 	return active;
 }
 
-void* malloc(size_t sz)
+void* alloc(size_t sz)
 {
 	mem_chunk_t *res = 0;
 	for (mem_chunk_t *c = active->first; c != 0 && res == 0; c = c->next)
@@ -73,4 +73,29 @@ void free(void *ptr)
 		if(chunk->next != 0)
 			chunk->next->prev = chunk;
 	}
+}
+
+void* operator new(size_t size)
+{
+    if(get_active_mem_mgr() == 0)
+        return 0;
+    return alloc(size);
+}
+
+void* operator new[](size_t size)
+{
+    if(get_active_mem_mgr() == 0)
+        return 0;
+    return alloc(size);
+}
+void operator delete(void* ptr)
+{
+    if(get_active_mem_mgr() != 0)
+        free(ptr);
+}
+
+void operator delete[](void* ptr)
+{
+    if(get_active_mem_mgr() != 0)
+        free(ptr);
 }

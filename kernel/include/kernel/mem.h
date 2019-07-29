@@ -22,7 +22,7 @@ typedef struct mem_mgr
 	mem_chunk_t *first;
 } mem_mgr_t;
 
-struct mem_mgr *new_mem_mgr();
+struct mem_mgr *new_mem_mgr(size_t start, size_t sz);
 
 struct mem_mgr *get_active_mem_mgr();
 void *alloc(size_t);
@@ -30,6 +30,17 @@ void free(void*);
 
 #ifdef __cplusplus
 }
+
+void* operator new(size_t size);
+void* operator new[](size_t size);
+
+// placement new
+// void* operator new(size_t size, void* ptr);
+// void* operator new[](size_t size, void* ptr);
+
+void operator delete(void* ptr);
+void operator delete[](void* ptr);
+
 #endif
 
 #endif
