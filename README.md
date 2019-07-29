@@ -21,5 +21,6 @@ I plan to:
  * [x] To use 1024x768 video mode
  * [x] To do memory management
  * [ ] To create FAT32 or Ext2 filesystem driver.
- * [ ] To setup GDT/IDT? (I don't know does the GRUB)
+ * [ ] To setup GDT/IDT
  * [ ] To create fancy GUIs
+P. S. The items are not in the order.
