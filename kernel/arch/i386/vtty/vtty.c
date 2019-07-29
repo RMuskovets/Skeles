@@ -6,8 +6,8 @@
 #include <kernel/vesa.h>
 #include <kernel/video-tty.h>
 #include <kernel/font.h>
+#include <kernel/vga.h>
 
-#include "../inc/vga.h"
 
 const uint32_t start_x = 10;
 const uint32_t start_y = 10;
@@ -17,11 +17,13 @@ uint32_t row = 0;
 
 uint32_t max_col, max_row;
 
+uint32_t vga_color;
+
 void print_ch(char c)
 {
 	int x = (start_x+col*GLYPH_WIDTH);
 	int y = (start_y+row*GLYPH_HEIGHT);
-	uint32_t color = vga_to_color(VGA_COLOR_MAGENTA);
+	uint32_t color = vga_color;
 	int lx; int ly;
 	uint8_t *bitmap = font8x8_basic[c % 128];
 	for (lx = 0; lx < GLYPH_WIDTH; lx++) {
@@ -33,10 +35,11 @@ void print_ch(char c)
 	}
 }
 
-void terminal_initialize(void)
+void terminal_initialize(uint8_t vc)
 {
 	max_col = (start_x * 2 - get_width()) / GLYPH_WIDTH;
 	max_row = (start_y * 2 - get_height())/ GLYPH_HEIGHT;
+	vga_color = vga_to_color(vc);
 }
 
 void terminal_putchar(char c)
