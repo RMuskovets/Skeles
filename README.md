@@ -19,7 +19,7 @@ Fork the repo and send PRs to me - I'll try to merge the most relevant ones.
 # Roadmap
 I plan to:
  * [x] To use 1024x768 video mode
- * [ ] To do memory management
+ * [x] To do memory management
  * [ ] To create FAT32 or Ext2 filesystem driver.
  * [ ] To setup GDT/IDT? (I don't know does the GRUB)
  * [ ] To create fancy GUIs
