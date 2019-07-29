@@ -1,6 +1,10 @@
 #ifndef _KERNEL_FONT_H
 #define _KERNEL_FONT_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define GLYPH_WIDTH 8
 #define GLYPH_HEIGHT 8
 char font8x8_basic[128][8] = {
@@ -133,5 +137,9 @@ char font8x8_basic[128][8] = {
     { 0x6E, 0x3B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+007E (~)
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}    // U+007F
 };
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

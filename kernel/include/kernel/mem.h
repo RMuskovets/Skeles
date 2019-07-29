@@ -5,6 +5,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct mem_chunk
 {
 	struct mem_chunk *prev;
@@ -23,5 +27,9 @@ struct mem_mgr *new_mem_mgr();
 struct mem_mgr *get_active_mem_mgr();
 void *alloc(size_t);
 void free(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
