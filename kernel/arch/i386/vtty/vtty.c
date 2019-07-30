@@ -26,6 +26,8 @@ uint32_t vga_color, bg_color;
 
 void print_ch(char);
 
+void print_ch_at(char c, int pos_x, int pos_y);
+
 static char colors[] =
 {
     [VTCOLOR_BLACK] = VGA_COLOR_BLACK,
@@ -55,8 +57,7 @@ void vtc_paint_callback(vtconsole_t *vtc, vtcell_t *cell, int x, int y)
 {
 	terminal_setcolor((cell->attr.bright ? brightcolors : colors)[cell->attr.fg]);
 	terminal_setbgcolor(colors[cell->attr.bg]);
-	//terminal_goto((uint32_t) x, (uint32_t) y);
-	print_ch(cell->c);
+	print_ch_at(cell->c, x, y);
 }
 
 void vtc_move_callback(vtconsole_t *vtc, vtcursor_t *cur)
@@ -86,6 +87,23 @@ void print_ch(char c)
 {
 	int x = (start_x+col*GLYPH_WIDTH);
 	int y = (start_y+row*GLYPH_HEIGHT);
+	int lx; int ly;
+	uint8_t *bitmap = font8x8_basic[c % 128];
+	for (lx = 0; lx < GLYPH_WIDTH; lx++) {
+		for (ly = 0; ly < GLYPH_HEIGHT; ly++) {
+			uint8_t row = bitmap[ly];
+			if ((row >> lx) & 1)
+				putpixeli(x+lx, y+ly, vga_color);
+			else
+				putpixeli(x+lx,y+ly, bg_color);
+		}
+	}
+}
+
+void print_ch_at(char c, int pos_x, int pos_y)
+{
+	int x = (start_x+pos_x*GLYPH_WIDTH);
+	int y = (start_y+pos_y*GLYPH_HEIGHT);
 	int lx; int ly;
 	uint8_t *bitmap = font8x8_basic[c % 128];
 	for (lx = 0; lx < GLYPH_WIDTH; lx++) {
