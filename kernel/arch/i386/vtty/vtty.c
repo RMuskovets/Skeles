@@ -22,15 +22,40 @@ uint32_t row = 0;
 
 uint32_t max_col, max_row;
 
-uint32_t vga_color;
+uint32_t vga_color, bg_color;
 
 void print_ch(char);
+
+static char colors[] =
+{
+    [VTCOLOR_BLACK] = VGA_COLOR_BLACK,
+    [VTCOLOR_RED] = VGA_COLOR_RED,
+    [VTCOLOR_GREEN] = VGA_COLOR_GREEN,
+    [VTCOLOR_YELLOW] = VGA_COLOR_BROWN,
+    [VTCOLOR_BLUE] = VGA_COLOR_BLUE,
+    [VTCOLOR_MAGENTA] = VGA_COLOR_MAGENTA,
+    [VTCOLOR_CYAN] = VGA_COLOR_CYAN,
+    [VTCOLOR_GREY] = VGA_COLOR_LIGHT_GREY,
+};
+
+static char brightcolors[] =
+{
+    [VTCOLOR_BLACK] = VGA_COLOR_DARK_GREY,
+    [VTCOLOR_RED] = VGA_COLOR_LIGHT_RED,
+    [VTCOLOR_GREEN] = VGA_COLOR_LIGHT_GREEN,
+    [VTCOLOR_YELLOW] = VGA_COLOR_LIGHT_BROWN,
+    [VTCOLOR_BLUE] = VGA_COLOR_LIGHT_BLUE,
+    [VTCOLOR_MAGENTA] = VGA_COLOR_LIGHT_MAGENTA,
+    [VTCOLOR_CYAN] = VGA_COLOR_LIGHT_CYAN,
+    [VTCOLOR_GREY] = VGA_COLOR_WHITE,
+};
 
 #ifdef __USE_VTC
 void vtc_paint_callback(vtconsole_t *vtc, vtcell_t *cell, int x, int y)
 {
-	terminal_setcolor(vga_to_color(cell->attr.fg));
-	terminal_goto((uint32_t) x, (uint32_t) y);
+	terminal_setcolor((cell->attr.bright ? brightcolors : colors)[cell->attr.fg]);
+	terminal_setbgcolor(colors[cell->attr.bg]);
+	//terminal_goto((uint32_t) x, (uint32_t) y);
 	print_ch(cell->c);
 }
 
@@ -46,6 +71,10 @@ void terminal_setcolor(uint8_t vc)
 {
 	vga_color = vga_to_color(vc);
 }
+void terminal_setbgcolor(uint8_t vc)
+{
+	bg_color = vga_to_color(vc);
+}
 
 void terminal_goto(uint32_t c, uint32_t r)
 {
@@ -57,14 +86,15 @@ void print_ch(char c)
 {
 	int x = (start_x+col*GLYPH_WIDTH);
 	int y = (start_y+row*GLYPH_HEIGHT);
-	uint32_t color = vga_color;
 	int lx; int ly;
 	uint8_t *bitmap = font8x8_basic[c % 128];
 	for (lx = 0; lx < GLYPH_WIDTH; lx++) {
 		for (ly = 0; ly < GLYPH_HEIGHT; ly++) {
 			uint8_t row = bitmap[ly];
 			if ((row >> lx) & 1)
-				putpixeli(x+lx, y+ly, color);
+				putpixeli(x+lx, y+ly, vga_color);
+			else
+				putpixeli(x+lx,y+ly, bg_color);
 		}
 	}
 }
@@ -76,7 +106,7 @@ void terminal_initialize()
 #ifdef __USE_VTC
 	vtc = vtconsole(max_col, max_row, vtc_paint_callback, vtc_move_callback);
 #endif
-	vga_color = vga_to_color(VGA_COLOR_CYAN);
+	//vga_color = vga_to_color(VGA_COLOR_CYAN);
 }
 
 void terminal_free()
