@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 void terminal_setcolor(uint8_t);
+void terminal_setbgcolor(uint8_t);
 void terminal_goto(uint32_t, uint32_t);
 
 void terminal_initialize();

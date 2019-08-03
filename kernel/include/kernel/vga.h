@@ -1,6 +1,14 @@
 #ifndef ARCH_I386_VGA_H
 #define ARCH_I386_VGA_H
 
+#ifndef GLYPH_WIDTH
+#define GLYPH_WIDTH 8
+#endif
+
+#ifndef GLYPH_HEIGHT
+#define GLYPH_HEIGHT 8
+#endif
+
 #include <stdint.h>
 
 #ifdef __cplusplus
