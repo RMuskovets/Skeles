@@ -28,7 +28,7 @@ void putrectsfs(int x1, int y1, int x2, int y2, argb_t *sc, argb_t *fc) {
 	putlinevs(x1+1, y1, y2 - y1, sc);
 	putlinevs(x2-1, y1, y2 - y1, sc);
 	int x = x1+1;
-	int x3= x2-1;
-	for (int y = y1+1; y < (y2-1); y++)
+	int x3= x2;
+	for (int y = y1+1; y < (y2); y++)
 		putlinehs(x, y, x3-x, fc);
 }

@@ -23,15 +23,6 @@ void putrectfi (int x1, int y1, int x2, int y2, uint32_t c) {
 		putlinehi(x1, y, (x2-x1), c);
 }
 void putrectsfi(int x1, int y1, int x2, int y2, uint32_t sc, uint32_t fc) {
-	// putlinehi(x1+0, y1, x2 - x1, sc);
-	// putlinehi(x1-0, y2, x2 - x1, sc);
-	// putlinevi(x1+1, y1, y2 - y1, sc);
-	// putlinevi(x2-1, y1, y2 - y1, sc);
-	// int x = x1+1;
-	// int x3= x2-1;
-	// for (int y = y1+1; y < (y2-1); y++)
-	// 	putlinehi(x, y, x3-x, fc);
-
 	putrectsi(x1, y1, x2, y2, sc);
-	putrectfi(x1+1, y1+1, x2-1, y2-1, fc);
+	putrectfi(x1+1, y1+1, x2, y2, fc);
 }
