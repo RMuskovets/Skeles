@@ -1,7 +1,7 @@
 #include <kernel/ui/window.h>
 #include <kernel/mem.h>
 #include <kernel/vesa.h>
-#include <kernel/text.h>
+// #include <kernel/text.h>
 
 void draw_window(window_t * self)
 {

@@ -5,7 +5,8 @@
 #include <kernel/vesa.h>
 #include <kernel/mem.h>
 #include <kernel/ui/window.h>
-#include <kernel/text.h>
+// #include <kernel/text.h>
+// #include <kernel/video-tty.h>
 
 #define SHELL_PROMPT "root@kernel$ "
 
@@ -46,11 +47,11 @@ extern "C" void kernel_main(uint32_t *multiboot) {
 	wnd->background_color = 0xff00ffff;
 	wnd->draw(wnd);
 
-	set_printing_coords(900, 10);
-	set_fg_color(0xff000000);
-	set_bg_color(0xff00ffff);
-	put_string("hello, world");
+	// set_printing_coords(900, 10);
+	// set_fg_color(0xff000000);
+	// set_bg_color(0xff00ffff);
+	// put_string("hello, world");
 
-	set_printing_coords(300, 50);
-	put_string("hi");
+	// set_printing_coords(300, 50);
+	// put_string("hi");
 }
