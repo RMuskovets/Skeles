@@ -22,6 +22,12 @@ void setup_memmgr(uint32_t *multiboot)
 	new_mem_mgr(*memupper, 64*1048576);
 }
 
+void loading_screen(window_t *desktop)
+{
+	desktop->draw(desktop);
+	
+}
+
 extern "C" void kernel_main(uint32_t *multiboot) {
 	//setup_terminal(multiboot);
 	set_framebuffer(multiboot);

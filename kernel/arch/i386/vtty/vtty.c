@@ -6,6 +6,7 @@
 #include <kernel/video-tty.h>
 #include <kernel/vga.h>
 #include <kernel/text.h>
+#include <kernel/font.h>
 
 // #define __USE_VTC
 
@@ -24,13 +25,10 @@ uint32_t max_col, max_row;
 uint32_t vga_color, bg_color;
 
 void print_ch(char);
-<<<<<<< HEAD
 #ifdef __USE_VTC
-=======
 
 void print_ch_at(char c, int pos_x, int pos_y);
 
->>>>>>> 67c01cdde17c69eb6fcac39b5e04375b64c23ac7
 static char colors[] =
 {
     [VTCOLOR_BLACK] = VGA_COLOR_BLACK,
@@ -67,13 +65,7 @@ void vtc_paint_callback(vtconsole_t *vtc, vtcell_t *cell, int x, int y)
 	}
 
 	terminal_setbgcolor(colors[cell->attr.bg]);
-<<<<<<< HEAD
-
-	set_printing_coords(start_x + x, start_y + y);
-	put_char(cell->c);
-=======
 	print_ch_at(cell->c, x, y);
->>>>>>> 67c01cdde17c69eb6fcac39b5e04375b64c23ac7
 }
 
 void vtc_move_callback(vtconsole_t *vtc, vtcursor_t *cur)
