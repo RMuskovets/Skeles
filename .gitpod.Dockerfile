@@ -11,5 +11,4 @@ RUN apt-get update && apt-get install wget
 
 # Installing i386-elf-*
 
-RUN wget -O toolchain.sh https://github.com/RMuskovets/cross-compiler/raw/master/gcc830-binutils230.sh
-RUN bash toolchain.sh
+RUN wget -c https://github.com/RMuskovets/cross-compiler/raw/master/gcc830-binutils230.sh | bash
