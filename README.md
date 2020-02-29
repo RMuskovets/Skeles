@@ -23,3 +23,4 @@ I plan to:
  * [ ] To setup GDT/IDT
  * [ ] To create FAT32 or Ext2 filesystem driver.
  * [ ] To create fancy GUIs
+ * [ ] To write an application loader.
