@@ -5,7 +5,7 @@ USER root
 RUN apt-get update && apt-get install -y \
     gcc g++ make binutils \
     qemu \
-    build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo libcloog-isl-dev libisl-dev
+    build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo
 
 # Installing i386-elf-*
 
