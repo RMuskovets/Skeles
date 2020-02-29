@@ -12,11 +12,11 @@
 # # Installing i386-elf-*
 
 # RUN wget -O - https://github.com/RMuskovets/cross-compiler/raw/master/gcc830-binutils230.sh | bash -
-FROM ubuntu
+FROM ubuntu:18.04
 
 #Add necessary files to image
-ADD toolchain/binutils-2.29.tar.gz /root/src/
-ADD toolchain/gcc-7.2.0.tar.gz /root/src/
+#ADD toolchain/binutils-2.30.tar.gz /root/src/
+#ADD toolchain/gcc-8.3.0.tar.gz /root/src/
 
 RUN apt-get update && apt-get upgrade; `
 apt-get -y install make; `
@@ -38,7 +38,11 @@ apt-get -y install libisl-dev; `
 apt-get -y install libcloog-isl-dev; `
 apt-get -y install libmpc-dev; `
 apt-get -y install grub2; `
-apt-get -y install xorriso
+apt-get -y install xorriso; `
+apt-get -y install wget
+
+RUN wget -O /root/src/binutils-2.30.tar.gz https://ftp.gnu.org/gnu/binutils/binutils-2.30.tar.gz
+RUN wget -O /root/src/gcc-8.3.0.tar.gz https://ftp.gnu.org/gnu/gcc/gcc-8.3.0/gcc-8.3.0.tar.gz
 
 #Preparation
 ENV PREFIX $HOME/opt/cross
