@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/RMuskovets/Skeles) 
+
 # What is Skeles?
 Skeles is a hobby OS with VESA/VBE support and GRUB booting.
 
